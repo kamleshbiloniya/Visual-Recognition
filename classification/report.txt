@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{assign}
+
+\setcoursetitle{CS783: Visual Recognition}
+\setassigncode{3}
+\setauthname{Gurpreet Singh, Kamlesh Kumar Biloniya}
+\setauthroll{150259, 160317}
+\setheaddate{February 24, 2019}
+
+\begin{document}
+\makeheader
+
+\begin{ssection}{Problem Statement}
+Our basic task is to detect bounding boxes using resnet-18, for that first we have to do correct data loading and preprocessing.We are given a data-set of images of which each image has corresponding annotation file containing location of bounding boxes.We have to extract and save them with corresponding label.We are asked to use two approaches for object detection (one layer and two layer detection)  
+\end{ssection}
+
+\begin{ssection}{Preliminaries}
+
+    \begin{ssubsection}{Data Loading and Preprocessing}
+    We extracted all the patches from given locations and stored them in corresponding class folder.
+    As locations of ground patches was not given.We extracted one patch from each image ( but maximum 2500) if all intersections over unions with 20 classes is less than 0.1. 
+    
+    \end{ssubsection}
+    
+    \begin{ssubsection}{Resnet18}
+    We used pre-trained model resnet18. 
+    \end{ssubsection}
+    
+    \begin{ssubsection}{Classification}
+ 
+    \end{ssubsection}
+\end{ssection}
+
+\begin{ssection}{Approaches}
+    We basically use pre-trained Resnet18 for object classification. We also experiment with bilinear-CNN for the purpose of feature extraction. The reasons for using these methods are:
+    \begin{itemize}
+        \item Numerous papers mention the advantage of using deep neural networks as feature extractors over traditional methods like SIFT and SURF.
+        \item Deep Neural Networks work better and are easily scalable as compared to kernel SVMs. Moreover, a number of non-linearities in deep neural networks make it very handy for classification tasks.
+        \item Bilinear-CNNs have been shown to perform quite well in fine-grained classification tasks and there have been quite some improvements suggested for the same.
+    \end{itemize}
+    For our method, we rely on a simple neural net for coarse-grained classification. For fine-grained classification, we append the coarse labels/predictions to the features of the images and then pass it to another neural network that performs fine-grained classification.
+\end{ssection}
+
+\begin{ssection}{Methods}
+We enumerate the different methods that we used below:
+\begin{itemize}
+    \item Fixed ResNet Small 34 (*)
+    \item Full ResNet Small 34 (*)
+    \item Fixed ResNet Big 34 (*)
+    \item Full ResNet Big 34 (*)
+    \item Bilinear CNN
+    \item Fixed ResNet Small 18
+    \item Fixed ResNet Big 18
+\end{itemize}
+The nomenclature for different ResNets are as follows:
+\begin{enumerate}
+    \item Fixed means we train only the final layers that belong to the classification part of the models and treat the feature extractor as fixed while Full means we train the whole network in the fine-tuning procedure.
+    \item Small means we connect the feature extractor to the coarse outputs directly and feature extractor to a hidden layer of size 250 followed by fine outputs. Big means we have a layer of 2048 units in coarse classification module and of [2048,1024,512] units in fine classification module.
+    \item (*) Denotes that we trained this model on both variants of training data, that is, with preprocessing and without preprocessing.
+\end{enumerate}
+\end{ssection}
+\begin{ssection}{Results}
+ Results of our models on training data can be seen in the table below\ref{tab:results}.
+    
+    \begin{table}[htpb]
+        \centering
+        \begin{tabular}{c|l|l}\bt{Model} & \bt{Coarse Accuracy}  & \bt{Fine Accuracy} \\
+            \hline
+    Fixed ResNet Small 34 w/o preprocessing & 100.0 & 98.97 \\
+
+        \end{tabular}
+        \caption{Accuracies Obtained on Different Models}
+        \label{tab:results}
+    \end{table}
+\end{ssection}
+
+\begin{ssection}{Conclusion}
+
+\end{ssection}
+\end{document}
